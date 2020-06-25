@@ -96,7 +96,7 @@ trait IndigoGame[BootData, StartupData, Model, ViewModel] extends GameLauncher {
       bootUp.fonts,
       bootUp.animations,
       (ac: AssetCollection) => (d: Dice) => setup(bootUp.bootData, ac, d),
-      (sd: StartupData) => new GameWithSubSystems(initialModel(sd), new SubSystemsRegister[Model](bootUp.subSystems.toList)),
+      (sd: StartupData) => new GameWithSubSystems(initialModel(sd), new SubSystemsRegister(bootUp.subSystems.toList)),
       (sd: StartupData) => (m: GameWithSubSystems[Model]) => initialViewModel(sd, m.model),
       frameProcessor
     )

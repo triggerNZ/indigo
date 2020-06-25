@@ -16,7 +16,7 @@ final case class JobMarket(jobs: List[Job]) extends SubSystem.Stateful {
     case _                 => None
   }
 
-  def update(frameContext: FrameContext): JobMarketEvent => Outcome[SubSystem] = {
+  def update(frameContext: FrameContext): JobMarketEvent => Outcome[JobMarket] = {
     case JobMarketEvent.Post(job) =>
       Outcome(
         this.copy(jobs = jobs :+ job)

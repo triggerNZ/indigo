@@ -1,4 +1,4 @@
-package indigo.shared
+package indigo.scenes
 
 import utest._
 

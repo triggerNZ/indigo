@@ -6,7 +6,7 @@ import indigo.SceneUpdateFragment
 import indigo.shared.subsystems.SubSystemsRegister
 import indigo.shared.FrameContext
 
-final class GameWithSubSystems[Model](val model: Model, val subSystemsRegister: SubSystemsRegister[Model])
+final class GameWithSubSystems[Model](val model: Model, val subSystemsRegister: SubSystemsRegister)
 object GameWithSubSystems {
 
   def update[Model](

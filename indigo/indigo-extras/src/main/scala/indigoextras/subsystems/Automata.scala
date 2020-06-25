@@ -19,7 +19,7 @@ import indigo.shared.scenegraph.{SceneGraphNode, Renderable}
 import indigo.shared.temporal.Signal
 import indigo.shared.scenegraph.Clone
 
-final class Automata(val poolKey: AutomataPoolKey, val automaton: Automaton, val layer: Layer, maxPoolSize: Option[Int]) extends SubSystem {
+final class Automata(val poolKey: AutomataPoolKey, val automaton: Automaton, val layer: Layer, maxPoolSize: Option[Int]) extends SubSystem.Stateful {
   type EventType = AutomataEvent
 
   val pool: mutable.ListBuffer[SpawnedAutomaton] =
