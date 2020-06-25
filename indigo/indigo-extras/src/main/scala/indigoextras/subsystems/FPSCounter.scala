@@ -12,44 +12,50 @@ import indigo.shared.datatypes.RGBA
 import indigo.shared.AsString
 import indigo.shared.scenegraph.Text
 import indigo.shared.events.FrameTick
+import indigo.shared.datatypes.BindingKey
 
 @SuppressWarnings(Array("org.wartremover.warts.Var"))
-final class FPSCounter(fontKey: FontKey, position: Point, targetFPS: Int) extends SubSystem.Stateful {
+final class FPSCounter(fontKey: FontKey, position: Point, targetFPS: Int) extends SubSystem.Stateless {
 
-  var fps: Int                     = 0
-  var lastInterval: Seconds         = Seconds.zero
-  var frameCountSinceInterval: Int = 0
+  type EventType      = GlobalEvent
+  type SubSystemModel = FPSCounterState
 
-  type EventType = GlobalEvent
+  val key: BindingKey =
+    BindingKey("fps counter") // There is only one FPS, recording the state twice makes no sense.
 
   val eventFilter: GlobalEvent => Option[GlobalEvent] = {
     case FrameTick => Option(FrameTick)
-    case _            => None
+    case _         => None
   }
 
-  def update(frameContext: FrameContext): GlobalEvent => Outcome[FPSCounter] = {
+  def initialModel: FPSCounterState =
+    FPSCounterState.default
+
+  def update(frameContext: FrameContext, model: FPSCounterState): GlobalEvent => Outcome[FPSCounterState] = {
     case FrameTick =>
-      if (frameContext.gameTime.running >= (this.lastInterval + Seconds(1))) {
-        fps = Math.min(targetFPS, frameCountSinceInterval + 1)
-        lastInterval = frameContext.gameTime.running
-        frameCountSinceInterval = 0
-      } else {
-        frameCountSinceInterval += 1
-      }
-      Outcome(this)
+      if (frameContext.gameTime.running >= (model.lastInterval + Seconds(1)))
+        Outcome(
+          FPSCounterState(
+            fps = Math.min(targetFPS, model.frameCountSinceInterval + 1),
+            lastInterval = frameContext.gameTime.running,
+            frameCountSinceInterval = 0
+          )
+        )
+      else
+        Outcome(model.copy(frameCountSinceInterval = model.frameCountSinceInterval + 1))
   }
 
-  def pickTint: RGBA =
+  def render(frameContext: FrameContext, model: FPSCounterState): SceneUpdateFragment =
+    SceneUpdateFragment.empty
+      .addUiLayerNodes(Text(fpsCount(model.fps), position.x, position.y, 1, fontKey).withTint(pickTint(model.fps)))
+
+  def fpsCount(fps: Int)(implicit showI: AsString[Int]): String =
+    s"""FPS: ${showI.show(fps)}"""
+
+  def pickTint(fps: Int): RGBA =
     if (fps > targetFPS - (targetFPS * 0.05)) RGBA.Green
     else if (fps > targetFPS / 2) RGBA.Yellow
     else RGBA.Red
-
-  def render(frameContext: FrameContext): SceneUpdateFragment =
-    SceneUpdateFragment.empty
-      .addUiLayerNodes(Text(fpsCount, position.x, position.y, 1, fontKey).withTint(pickTint))
-
-  def fpsCount(implicit showI: AsString[Int]): String =
-    s"""FPS: ${showI.show(fps)}"""
 }
 
 object FPSCounter {
@@ -60,4 +66,10 @@ object FPSCounter {
   def subSystem(fontKey: FontKey, position: Point, targetFPS: Int): FPSCounter =
     FPSCounter(fontKey, position, targetFPS)
 
+}
+
+final case class FPSCounterState(fps: Int, lastInterval: Seconds, frameCountSinceInterval: Int)
+object FPSCounterState {
+  def default: FPSCounterState =
+    FPSCounterState(0, Seconds.zero, 0)
 }

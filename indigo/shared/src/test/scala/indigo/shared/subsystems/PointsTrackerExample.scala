@@ -9,7 +9,7 @@ import indigo.shared.datatypes.FontKey
 import indigo.shared.events.InputState
 import indigo.shared.FrameContext
 
-final case class PointsTrackerExample(points: Int) extends SubSystem {
+final case class PointsTrackerExample(points: Int) extends SubSystem.Stateful {
   type EventType = PointsTrackerEvent
 
   val eventFilter: GlobalEvent => Option[PointsTrackerEvent] = {
@@ -17,7 +17,7 @@ final case class PointsTrackerExample(points: Int) extends SubSystem {
     case _                     => None
   }
 
-  def update(context: FrameContext): PointsTrackerEvent => Outcome[SubSystem] = {
+  def update(context: FrameContext): PointsTrackerEvent => Outcome[PointsTrackerExample] = {
     case PointsTrackerEvent.Add(pts) =>
       Outcome(this.copy(points = points + pts))
 

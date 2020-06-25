@@ -12,7 +12,7 @@ object SubSystem {
   trait Stateful extends SubSystem {
     type EventType
 
-    val eventFilter: GlobalEvent => Option[EventType]
+    def eventFilter: GlobalEvent => Option[EventType]
 
     def update(context: FrameContext): EventType => Outcome[SubSystem.Stateful]
 
@@ -23,9 +23,9 @@ object SubSystem {
     type EventType
     type SubSystemModel
 
-    val key: BindingKey
+    def key: BindingKey
 
-    val eventFilter: GlobalEvent => Option[EventType]
+    def eventFilter: GlobalEvent => Option[EventType]
 
     def initialModel: SubSystemModel
 

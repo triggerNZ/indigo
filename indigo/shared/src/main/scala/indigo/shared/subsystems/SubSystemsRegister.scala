@@ -76,6 +76,6 @@ final class SubSystemsRegister(subSystems: List[SubSystem]) {
   }
 
   def size: Int =
-    statefulSubSystems.size
+    statefulSubSystems.size + stateLessSubSystems.length
 
 }
