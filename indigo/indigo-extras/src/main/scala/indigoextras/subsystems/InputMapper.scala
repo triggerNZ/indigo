@@ -7,7 +7,7 @@ import indigo.shared.scenegraph.SceneUpdateFragment
 import indigo.shared.events.InputEvent
 import indigo.shared.FrameContext
 
-final class InputMapper(mappings: Map[InputEvent, List[GlobalEvent]]) extends SubSystem {
+final class InputMapper(mappings: Map[InputEvent, List[GlobalEvent]]) extends SubSystem.Stateful {
 
   type EventType = InputMapperEvent
 

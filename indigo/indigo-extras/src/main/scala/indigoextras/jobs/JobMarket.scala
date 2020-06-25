@@ -7,7 +7,7 @@ import indigo.shared.scenegraph.SceneUpdateFragment
 import indigo.shared.datatypes.BindingKey
 import indigo.shared.FrameContext
 
-final case class JobMarket(jobs: List[Job]) extends SubSystem {
+final case class JobMarket(jobs: List[Job]) extends SubSystem.Stateful {
 
   type EventType = JobMarketEvent
 

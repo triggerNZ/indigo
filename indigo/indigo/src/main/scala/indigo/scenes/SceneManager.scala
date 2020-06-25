@@ -17,8 +17,8 @@ class SceneManager[GameModel, ViewModel](scenes: NonEmptyList[Scene[GameModel, V
   private var finderInstance: SceneFinder = scenesFinder
 
   @SuppressWarnings(Array("org.wartremover.warts.MutableDataStructures"))
-  private val subSystemStates: mutable.HashMap[SceneName, SubSystemsRegister] = {
-    val m = mutable.HashMap[SceneName, SubSystemsRegister]()
+  private val subSystemStates: mutable.HashMap[SceneName, SubSystemsRegister[GameModel]] = {
+    val m = mutable.HashMap[SceneName, SubSystemsRegister[GameModel]]()
     scenes.toList.foreach { s =>
       m.put(s.name, new SubSystemsRegister(s.sceneSubSystems.toList))
     }

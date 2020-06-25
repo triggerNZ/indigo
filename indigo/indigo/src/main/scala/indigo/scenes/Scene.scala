@@ -6,6 +6,7 @@ import indigo.shared.scenegraph.SceneUpdateFragment
 import indigo.shared.EqualTo
 import indigo.shared.subsystems.SubSystem
 import indigo.shared.FrameContext
+import indigo.shared.Lens
 
 trait Scene[GameModel, ViewModel] {
   type SceneModel

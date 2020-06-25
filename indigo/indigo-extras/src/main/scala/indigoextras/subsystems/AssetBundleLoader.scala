@@ -12,7 +12,7 @@ import indigo.shared.events.AssetEvent
 import indigo.shared.FrameContext
 
 // Provides "at least once" message delivery for updates on a bundle's loading status.
-final case class AssetBundleLoader(tracker: AssetBundleTracker) extends SubSystem {
+final case class AssetBundleLoader(tracker: AssetBundleTracker) extends SubSystem.Stateful {
 
   type EventType = GlobalEvent
 

@@ -14,7 +14,7 @@ import indigo.shared.scenegraph.Text
 import indigo.shared.events.FrameTick
 
 @SuppressWarnings(Array("org.wartremover.warts.Var"))
-final class FPSCounter(fontKey: FontKey, position: Point, targetFPS: Int) extends SubSystem {
+final class FPSCounter(fontKey: FontKey, position: Point, targetFPS: Int) extends SubSystem.Stateful {
 
   var fps: Int                     = 0
   var lastInterval: Seconds         = Seconds.zero
